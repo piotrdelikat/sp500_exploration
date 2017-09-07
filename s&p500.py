@@ -9,16 +9,16 @@ def table_to_pickle():
 #Call function if you need reload data to pickle
 # table_to_pickle()
 
-#print(df.head())
-# names_categories = sector.loc[['Information Technology']]
+#Preparing data
+info = pd.read_pickle('sp500_companies.pickle')
+prices = pd.read_csv('sp500_joined_closes.csv', index_col=0)
 
-df = pd.read_pickle('sp500_companies.pickle')
+time_format = '%Y-%m-%d'
+prices.index = pd.to_datetime(prices.index, format=time_format)
+# Monthly
+prices_monthly = prices.resample('M').mean()
+# Industries tickers
+industry = info.loc['Information Technology',['Ticker symbol']]
+print(industry)
 
-data = df[['GICS Sub Industry', 'Ticker symbol', 'Security']]
-print(df.head())
-# print(df.loc['Information Technology', ['Ticker symbol', 'Security', 'GICS Sub Industry']])
-# print(data.loc['Information Technology'])
-
-
-#print(df.loc['Information Technology',["Ticker symbol"]])
 
