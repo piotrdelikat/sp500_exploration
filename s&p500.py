@@ -19,6 +19,13 @@ prices.index = pd.to_datetime(prices.index, format=time_format)
 prices_monthly = prices.resample('M').mean()
 # Industries tickers
 industry = info.loc['Information Technology',['Ticker symbol']]
-print(industry)
+tickers = industry['Ticker symbol'].tolist()
+
+prices_of_industry = prices[tickers]
+
+# max and min for visualisation
+data = pd.DataFrame()
+# data[max] =
+# data[min] =
 
 
