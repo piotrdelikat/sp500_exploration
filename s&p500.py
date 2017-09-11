@@ -19,17 +19,27 @@ time_format = '%Y-%m-%d'
 prices.index = pd.to_datetime(prices.index, format=time_format)
 # Monthly
 prices_monthly = prices.resample('M').mean()
-# Industries tickers
-industry = info.loc['Information Technology',['Ticker symbol']]
-tickers = industry['Ticker symbol'].tolist()
 
-prices_of_industry = prices[tickers]
 
-data = pd.DataFrame()
-data['min'] = prices_of_industry.min(axis=1)
-data['max'] = prices_of_industry.max(axis=1)
-data['mean'] = prices_of_industry.mean(axis=1)
+def output_data():
+    data = pd.DataFrame()
+    for industry in industries[:1]:
+        tickers = info.loc[industry, ['Ticker symbol']]
+        tickers = tickers['Ticker symbol'].tolist()
+        prices_of_industry = prices[tickers]
+
+        data['min'] = prices_of_industry.min(axis=1)
+        data['max'] = prices_of_industry.max(axis=1)
+        data['mean'] = prices_of_industry.mean(axis=1)
+
+    return data
+        #output = df with min max, mean, of every industry and sp500
+
+
+print(output_data())
 
 # Plot
+data = output_data()
+
 data.plot()
 plt.show()
