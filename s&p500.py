@@ -1,5 +1,8 @@
 import pandas as pd
 import matplotlib.pyplot as plt
+
+sp500 = pd.read_csv('SP500_INFLADJ_MONTH.csv', index_col=0)
+
 def table_to_pickle():
     url = 'https://en.wikipedia.org/wiki/List_of_S%26P_500_companies'
     html = pd.read_html(url,skiprows=0 ,header=0, index_col=3)
@@ -16,6 +19,7 @@ industries = info.index.drop_duplicates().tolist()
 
 
 time_format = '%Y-%m-%d'
+sp500.index = pd.to_datetime(sp500.index, format=time_format)
 prices.index = pd.to_datetime(prices.index, format=time_format)
 # Monthly
 prices_monthly = prices.resample('M').mean()
@@ -38,8 +42,8 @@ def output_data():
 
 print(output_data())
 
-# Plot
-data = output_data()
-
-data.plot()
-plt.show()
+# # Plot
+# data = output_data()
+#
+# data.plot()
+# plt.show()
