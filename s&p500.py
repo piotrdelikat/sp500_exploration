@@ -1,7 +1,6 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 
-sp500 = pd.read_csv('SP500_INFLADJ_MONTH.csv', index_col=0)
 
 def table_to_pickle():
     url = 'https://en.wikipedia.org/wiki/List_of_S%26P_500_companies'
@@ -19,10 +18,11 @@ industries = info.index.drop_duplicates().tolist()
 
 
 time_format = '%Y-%m-%d'
-sp500.index = pd.to_datetime(sp500.index, format=time_format)
 prices.index = pd.to_datetime(prices.index, format=time_format)
 # Monthly
 prices_monthly = prices.resample('M').mean()
+
+sp500_mean = prices_monthly.mean(axis=1)
 
 
 def output_data():
@@ -40,10 +40,11 @@ def output_data():
         #output = df with min max, mean, of every industry and sp500
 
 
-print(output_data())
 
 # # Plot
-# data = output_data()
-#
-# data.plot()
-# plt.show()
+data = output_data()
+
+plt.plot(data)
+plt.plot(sp500_mean)
+plt.legend()
+plt.show()
