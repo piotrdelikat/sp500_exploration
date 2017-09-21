@@ -25,8 +25,7 @@ prices.index = pd.to_datetime(prices.index, format=time_format)
 # Monthly
 prices_monthly = prices.resample('M').mean()
 
-sp500_mean = prices_monthly.mean(axis=1)
-
+sp500_mean = prices_monthly.mean(axis=1).to_frame(name="S&P500")
 
 def output_data():
     data = pd.DataFrame()
@@ -35,7 +34,7 @@ def output_data():
         ticks = tickers.loc[industry, ['Ticker symbol']]
         ticks = ticks['Ticker symbol'].tolist()
 
-        prices_of_industry = prices[ticks]
+        prices_of_industry = prices_monthly[ticks]
         # data['min'] = prices_of_industry.min(axis=1)
         # data['max'] = prices_of_industry.max(axis=1)
         data['{}'.format(industry)] = prices_of_industry.mean(axis=1)
@@ -45,8 +44,15 @@ def output_data():
 
 
 
-# Plot
 data = output_data()
+
+
+# To one DataFrame
+# full_data = pd.concat([sp500_mean, data], axis='columns')
+# full_data.to_csv('sp500_industries_mean.csv')
+
+
+# Matplotlib Plot
 
 for industry in data.columns.values:
     plt.plot(data[industry], label=industry)
